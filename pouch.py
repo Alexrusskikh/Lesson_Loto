@@ -9,20 +9,20 @@ class Pouch:
 
     def __init__(self, remains=90, taken=0):  # инициализация объекта  класса
         self.remains = remains  # осталось в мешке, от 90 за  ход  уменьшается на 1
-        self.taken = taken  # использованны в начале  игры 0
+        self.taken = taken  # использованны, в начале  игры 0
         self.taken_barrels = []  # список извлеченных бочонков
-        self.new_barrel = None
+        self.new_barrel = None #извлеченный бочонок
     def __str__(self):
         rep = f'Всего в мешке бочонков: {self.remains}, извлекли: {self.taken}, \n ' \
               f'список извлеченных: {self.taken_barrels}'
         return rep
 
-    def can_move(self):
-        ''' проверяет возможность хода - есть ли бочонки в мешке, в лото в этом нет необходимости, все равно
-         кто то выиграет
-        :return: True-False
-        '''
-        return self.remains > 0
+    # def can_move(self):
+    #     ''' проверяет возможность хода - есть ли бочонки в мешке, в лото в этом нет необходимости, все равно
+    #      кто то выиграет
+    #     :return: True-False
+    #     '''
+    #     return self.remains > 0
 
     def take_barrel(self):
         """достать ОДИН бочонок из мешка, - 1 ход"""
