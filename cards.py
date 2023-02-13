@@ -225,6 +225,5 @@ class Deck(Hand):
             else:
                 print("В колоде кончились карты....")
 
-
 if __name__=="__main__":
     input("\n\nНажмите  Enter, чтобы выйти.")
