@@ -102,7 +102,7 @@ class Card():
     def replacement(self, card, new_barrel):#замена числа на "*" в self.rows_card, а так  же в self.data
         """ замена выпавшего числа на * """
         if new_barrel in card.data:
-            print ("Есть такая цифра!")
+            print (f'\nЕсть такая цифра!')
             for index, item in enumerate(self.data):# в списке чисел карты ищем число
                 if item == new_barrel:
                     self.data[index] = self.__crossednum  # ставим фишку

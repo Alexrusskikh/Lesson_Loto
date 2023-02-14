@@ -1,6 +1,6 @@
-import unittest
+import unittest, random
 from pouch import Pouch
-from cards import Card
+from cards import Card, Hand
 class TestPouch(unittest.TestCase):
     def setUp(self):
         self.pouch = Pouch()
@@ -63,7 +63,70 @@ class QuestionTestCase(unittest.TestCase):
             self.assertEqual(response, 3)
 
 class TestCards(unittest.TestCase):
+
+    def setUp(self):
+        self.card = Card()
+
     def test_init(self):
+        self.assertEqual(len(self.card.data), 15)
+        self.assertEqual(len(self.card.rows_card), 3)
+
+    def test_replacement_rows(self):  # замена числа на "*" в self.rows_card, а так  же в self.data
+        """ замена выпавшего числа на *  в rows_card """
+        new_barrel = random.choice(self.card.data)
+        self.card.replacement(self.card, new_barrel)
+
+        self.assertTrue(any("*" in sl for sl in self.card.rows_card))
+
+    def test_replacement_data(self):#замена числа на "*" в self.rows_card, а так  же в self.data
+        """ замена выпавшего числа на * card.data"""
+        new_barrel = random.choice(self.card.data)
+        self.card.replacement(self.card, new_barrel)
+
+        self.assertEqual([i for i in self.card.data if i == '*'], ['*'])
+        self.assertTrue(any(True for i in self.card.data if i == '*'))
+
+
+    def test_closed_row(self):
+        """проверяет  ряд карточки на завершенность"""
+        item = [" ", "*", " ", " ", " ", " ", "*", " ", " ", " "]
+        self.assertTrue(self.card.closed_row(item))
+
+    def test_replacement_row(self):#заменяет ряд карточки на собачек
         card = Card()
-        self.assertEqual(len(card.data), 15)
-        self.assertEqual(len(card.rows_card), 3)
+        item = [" ", "*", " ", " ", " ", " ", "*", " ", " "]
+        self.assertEqual(len(card.replacement_row(item)), 9)
+        self.assertEqual(set(card.replacement_row(item)), {"@"})
+
+class TestHend(unittest.TestCase):
+
+    def setUp(self):
+        self.hand = Hand()
+
+    def test_init(self):
+        self.assertEqual(self.hand.cards, [])
+
+    def test_have_num(self):
+        """"  в каждой  карте игрока ищет в card.data вхождение new_barrel """
+        card = Card()
+        self.hand.cards.append(card)
+        new_barrel = random.choice(card.data)
+        self.assertTrue(self.hand.have_num(self.hand.cards, new_barrel))
+
+    def test_clear(self):
+        card = Card()
+        self.hand.cards.append(card)
+        self.hand.clear()
+        self.assertEqual(self.hand.cards, [])
+
+    def test_add(self):
+        card = Card()
+        self.hand.add(card)
+        """добавляет карту к списку self.cards"""
+        self.assertNotEqual(self.hand.cards, [])
+
+
+
+
+
+

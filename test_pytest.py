@@ -45,64 +45,75 @@ class TestCards:
         assert len(card.data) == 15
         assert len(card.rows_card) == 3
 
-    def test_replacement_data(self):#замена числа на "*" в self.rows_card, а так  же в self.data
+    def test_replacement(self):#замена числа на "*" в self.rows_card, а так  же в self.data
         """ замена выпавшего числа на * """
         card = Card()  # начальное состояние карты
-        new_barrel = random.sample(card.data, 1)
-        for index, item in enumerate(card.data):  # в списке чисел карты ищем число
-            if item == new_barrel:
-                card.data[index] = "*"  # ставим фишку
-                assert "*" in card.data == True
-
-    def test_replacement_rows(self):  # замена числа на "*" в self.rows_card, а так  же в self.data
-        """ замена выпавшего числа на * """
-        card = Card()  # начальное состояние карты
-        new_barrel = random.sample(card.data, 1)
-        for row in card.rows_card:# перебираем строки карточки
-            for index, item in enumerate(row):#в каждой  строке ищем число
-                if item == new_barrel:
-                    row[index] = "*" # ставим фишку
-                    assert any("*" in sl for sl in card.rows_card) == True
+        new_barrel = random.choice(card.data)
+        card.replacement(card, new_barrel)
+        assert [i for i in card.data if i == '*'] ==['*']
+        assert any([True for i in card.data if i == '*']) == True
+        assert any("*" in sl for sl in card.rows_card) == True
 
     def test_closed_row(self) -> bool:#проверяет  ряд карточки на завершенность...
+        card = Card()
         item = [" ", "*", " ", " ", " ", " ", "*", " ", " ", " "]
-        assert set(item) == {" ", "*"}
+        assert card.closed_row(item) == True
 
     def test_replacement_row(self):#заменяет ряд карточки на собачек
-        item = [" ", "*", " ", " ", " ", " ", "*", " ", " ", " "]
-        for index, num in enumerate(item):
-            item[index] = "@"
-        assert set(item) == {"@"}
+        card = Card()
+        item = [" ", "*", " ", " ", " ", " ", "*", " ", " "]
+        assert len(card.replacement_row(item)) == 9
+        assert set(card.replacement_row(item)) == {"@"}
+
+
+    def test_row_analisis(self):
+        """
+        возвращает номер закрытого ряда в карточке и заменяет  его @@@@@@@@@
+        :param row: порядковый номер горизонтального ряда
+        :param item: его содержимое, например [" ", " ", "*", "*", " "]
+        :return: номер закрытого ряда в карточке - 1,2,3
+        """
+        card = Card()
+        row = 0
+        item = [" ", "*", " ", " ", " ", " ", "*", " ", " "]
+        assert (card.row_analisis(row, item)) == 1
 
 class TestHand:
+
     def test_init(self):
         hand = Hand()
         assert hand.cards == []
 
     def test_have_num(self):
         """"  в каждой  карте игрока ищет в card.data вхождение new_barrel """
-        cards = []
-        card = Card()  # начальное состояние карты
-        cards.append(card)
-        new_barrel = random.sample(card.data, 1)
-        new_row = []
+        hand = Hand()
+        card = Card()
+        hand.cards.append(card)
+        new_barrel = random.choice(card.data)
+        assert(hand.have_num(hand.cards, new_barrel)) == True
 
-        for card in cards:
-            if new_barrel not in card.data:
-                new_row.append(card.data)
-        assert len(new_row) != 0
 
     def test_clear(self):
         hand = Hand()
+        card = Card()
+        hand.cards.append(card)
         hand.clear()
         assert hand.cards == []
 
     def test_add(self):
-        card = Card()
         hand = Hand()
+        card = Card()
         hand.add(card)
         """добавляет карту к списку self.cards"""
         assert hand.cards != []
 
+    def give(self):
+        """"передача карты в руки (в колоду)"""
+        hand = Hand()
+        card = Card()
+        hand.add(card)
+        hand1 = Hand()
+        hand.give(card, hand1)
+        assert hand1.cards != []
 
 
