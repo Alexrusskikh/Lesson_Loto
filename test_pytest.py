@@ -3,10 +3,12 @@ import random
 import pytest
 from pouch import Pouch
 import games
-from cards import Card, Hand
-#к модулю Pouch
+from cards import Card, Hand, Deck
+import copy
+
 class TestPouch:
-    def test_init(self):#начальное состояние  мешка
+    def test_init(self):
+        """начальное состояние  мешка"""
         pouch = Pouch(remains=90, taken=0)
         assert pouch.remains == 90
         assert pouch.taken == 0
@@ -16,7 +18,8 @@ class TestPouch:
         assert min(pouch.new_barrels) == 1
 
 
-    def test_take_barrel(self):#изменение состояния мешка  после извлечения бочонка
+    def test_take_barrel(self):
+        """ изменение состояния мешка  после извлечения бочонка"""
         pouch = Pouch(remains=90, taken=0)
         pouch.take_barrel()
         assert pouch.remains != 90
@@ -54,12 +57,14 @@ class TestCards:
         assert any([True for i in card.data if i == '*']) == True
         assert any("*" in sl for sl in card.rows_card) == True
 
-    def test_closed_row(self) -> bool:#проверяет  ряд карточки на завершенность...
+    def test_closed_row(self) -> bool:
+        """проверяет  ряд карточки на завершенность"""
         card = Card()
         item = [" ", "*", " ", " ", " ", " ", "*", " ", " ", " "]
         assert card.closed_row(item) == True
 
-    def test_replacement_row(self):#заменяет ряд карточки на собачек
+    def test_replacement_row(self):
+        """заменяет ряд карточки на собачек"""
         card = Card()
         item = [" ", "*", " ", " ", " ", " ", "*", " ", " "]
         assert len(card.replacement_row(item)) == 9
@@ -94,6 +99,7 @@ class TestHand:
 
 
     def test_clear(self):
+        """удаление карт из колоды/у игрока"""
         hand = Hand()
         card = Card()
         hand.cards.append(card)
@@ -101,13 +107,14 @@ class TestHand:
         assert hand.cards == []
 
     def test_add(self):
+        """добавляет карту к списку self.cards"""
         hand = Hand()
         card = Card()
         hand.add(card)
-        """добавляет карту к списку self.cards"""
+
         assert hand.cards != []
 
-    def give(self):
+    def test_give(self):
         """"передача карты в руки (в колоду)"""
         hand = Hand()
         card = Card()
@@ -115,5 +122,32 @@ class TestHand:
         hand1 = Hand()
         hand.give(card, hand1)
         assert hand1.cards != []
+
+class TestDeck:
+
+    def test_populate(self):
+        """заполнение  колоды картами, их  24 в лото"""
+        deck = Deck()
+        deck.populate()
+        assert len(deck.cards) == 24
+
+    def test_shuffle(self):
+        """перемешивание колоды"""
+        deck = Deck()
+        deck.populate()
+        old = copy.deepcopy(deck.cards)
+        deck.shuffle()
+        new = deck.cards
+        assert new != old
+
+    def test_deal(self):
+        """передача карт игроку из колоды"""
+        deck = Deck()
+        deck.populate()
+        hand = Hand()
+        per_hand = 2
+        deck.deal(hand, per_hand)
+        assert len(hand.cards) == 2
+
 
 

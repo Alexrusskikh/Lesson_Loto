@@ -1,6 +1,6 @@
-import unittest, random
+import unittest, random, copy
 from pouch import Pouch
-from cards import Card, Hand
+from cards import Card, Hand, Deck
 class TestPouch(unittest.TestCase):
     def setUp(self):
         self.pouch = Pouch()
@@ -124,6 +124,45 @@ class TestHend(unittest.TestCase):
         self.hand.add(card)
         """добавляет карту к списку self.cards"""
         self.assertNotEqual(self.hand.cards, [])
+
+    def test_give(self):
+        """"передача карты в руки (в колоду)"""
+        card = Card()
+        self.hand.add(card)
+        hand1 = Hand()
+        self.hand.give(card, hand1)
+        self.assertNotEqual(hand1.cards, [])
+
+class TestDeck(unittest.TestCase):
+
+    def setUp(self):
+        self.deck = Deck()
+    def test_populate(self):
+        """формирование колоды  из 24 карт"""
+
+        self.deck.populate()
+        self.assertEqual(len(self.deck.cards), 24)
+
+    def test_shuffle(self):
+        """перемешивание колоды"""
+
+        self.deck.populate()
+        old = copy.deepcopy(self.deck.cards)
+        self.deck.shuffle()
+        new = self.deck.cards
+        self.assertNotEqual(new, old)
+
+    def test_deal(self):
+        """передача карт игроку из колоды"""
+
+        self.deck.populate()
+        hand = Hand()
+        per_hand = 2
+        self.deck.deal(hand, per_hand)
+        self.assertEqual(len(hand.cards), 2)
+
+
+
 
 
 

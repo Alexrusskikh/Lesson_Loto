@@ -11,8 +11,6 @@ class Card():
     __emptynum = " "
     __crossednum = "*"
     __crossedrow = "@"
-    # data = None
-    # rows_card = None
     num = 0
 
     def __init__(self):
