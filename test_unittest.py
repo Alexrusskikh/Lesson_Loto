@@ -1,6 +1,8 @@
 import unittest, random, copy
 from pouch import Pouch
 from cards import Card, Hand, Deck
+from loto import Loto_Hand, Loto_Game
+
 class TestPouch(unittest.TestCase):
     def setUp(self):
         self.pouch = Pouch()
@@ -160,6 +162,34 @@ class TestDeck(unittest.TestCase):
         per_hand = 2
         self.deck.deal(hand, per_hand)
         self.assertEqual(len(hand.cards), 2)
+
+class TestLoto_Deck(unittest.TestCase):
+
+    def test_populate(self):
+        """заполнение  колоды картами, их  24 в лото"""
+        deck = Deck()
+        deck.populate()
+        self.assertEqual(len(deck.cards), 24)
+
+class TestLoto_Hand(unittest.TestCase):
+
+    def test_init(self):
+        loto_hand = Loto_Hand('Max', credit=0, winning=0, loss=0)
+        self.assertEqual(loto_hand.name, 'Max')
+        self.assertEqual(loto_hand.credit, 0)
+        self.assertEqual(loto_hand.winning, 0)
+        self.assertEqual(loto_hand.loss, 0)
+
+class TestLoto_Game(unittest.TestCase):
+
+    def test_init(self):
+        players = []
+        loto_game = Loto_Game(players)
+        self.assertEqual(loto_game.bank, 0)
+        self.assertEqual(len(loto_game.players), 0)
+        self.assertEqual(len(loto_game.deck.cards), 24)
+        self.assertEqual(loto_game.pouch.remains, 90)
+
 
 
 

@@ -2,7 +2,7 @@
 import random
 import pytest
 from pouch import Pouch
-import games
+from loto import Loto_Hand, Loto_Game, Loto_Player
 from cards import Card, Hand, Deck
 import copy
 
@@ -148,6 +148,37 @@ class TestDeck:
         per_hand = 2
         deck.deal(hand, per_hand)
         assert len(hand.cards) == 2
+
+class TestLoto_Deck:
+    def test_populate(self):
+        """заполнение  колоды картами, их  24 в лото"""
+        deck = Deck()
+        deck.populate()
+        assert len(deck.cards) == 24
+
+class TestLoto_Hand:
+
+    def test_init(self):
+        loto_hand = Loto_Hand('Max', credit=0, winning=0, loss=0)
+        assert loto_hand.name == 'Max'
+        assert loto_hand.credit == 0
+        assert loto_hand.winning == 0
+        assert loto_hand.loss == 0
+
+class TestLoto_Game:
+
+    def test_init(self):
+        players = []
+        loto_game = Loto_Game(players)
+        assert loto_game.bank == 0  # банк отдельной игры
+        assert len(loto_game.players) == 0
+        assert len(loto_game.deck.cards) == 24
+        assert loto_game.pouch.remains == 90
+
+
+
+
+
 
 
 

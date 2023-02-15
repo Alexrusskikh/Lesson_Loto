@@ -1,4 +1,4 @@
-import games
+#import games
 import random
 """модуль с классом Мешок, а в нем бочонки"""
 
