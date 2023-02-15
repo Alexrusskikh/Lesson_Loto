@@ -296,8 +296,6 @@ def main():
     else:
         print("Игра закончена")
 
-# games.manual()#инструкция к игре
-# main()
 
 if __name__ == '__main__':
     input("\n\nНажмите  Enter, чтобы выйти.")
