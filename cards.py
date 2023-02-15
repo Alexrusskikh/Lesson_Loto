@@ -11,8 +11,6 @@ class Card():
     __emptynum = " "
     __crossednum = "*"
     __crossedrow = "@"
-    # data = None
-    # rows_card = None
     num = 0
 
     def __init__(self):
@@ -102,7 +100,7 @@ class Card():
     def replacement(self, card, new_barrel):#замена числа на "*" в self.rows_card, а так  же в self.data
         """ замена выпавшего числа на * """
         if new_barrel in card.data:
-            print ("Есть такая цифра!")
+            print (f'\nЕсть такая цифра!')
             for index, item in enumerate(self.data):# в списке чисел карты ищем число
                 if item == new_barrel:
                     self.data[index] = self.__crossednum  # ставим фишку
@@ -224,7 +222,6 @@ class Deck(Hand):
                 #print(card)
             else:
                 print("В колоде кончились карты....")
-
 
 if __name__=="__main__":
     input("\n\nНажмите  Enter, чтобы выйти.")

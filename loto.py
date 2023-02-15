@@ -2,7 +2,7 @@
 
 """"на основе модулей cards, games, pouch"""
 import cards, games, pouch
-
+from tabulate import tabulate
 class Loto_Pouch(pouch.Pouch):
     """Мешок для  игры Loto"""
 
@@ -72,7 +72,6 @@ class Loto_Dealer(Loto_Hand):
 class Loto_Game():
     """Отдельная игра Loto, внутри будут раунды проверки наличия выпавшего бочонка..."""
     def __init__(self, players):
-
         self.players = players
         self.dealer = Loto_Dealer("Dealer")
         self.pouch = Loto_Pouch()
@@ -80,7 +79,7 @@ class Loto_Game():
         self.deck.populate()
         self.deck.shuffle()
         self.bank = 0  # банк отдельной игры
-        print(f"!!!! Банк игры пока  {self.bank} УЕ!!!!")
+        print(f"\n!!!! Банк игры пока  {self.bank} УЕ!!!!")
         for player in self.players:
             player.cards.clear()
 
@@ -234,9 +233,6 @@ class Loto_Game():
                     if player in leave_players:
                         print(f'{col}. {player.name}')
                         col += 1
-#
-
-
 
 
 def main():
@@ -301,8 +297,8 @@ def main():
         print("Игра закончена")
 
 
-games.manual()#инструкция к игре
-main()
+if __name__ == '__main__':
+    input("\n\nНажмите  Enter, чтобы выйти.")
 
 
 

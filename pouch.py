@@ -1,4 +1,4 @@
-import games
+#import games
 import random
 """модуль с классом Мешок, а в нем бочонки"""
 
@@ -17,12 +17,6 @@ class Pouch:
               f'список извлеченных: {self.taken_barrels}'
         return rep
 
-    # def can_move(self):
-    #     ''' проверяет возможность хода - есть ли бочонки в мешке, в лото в этом нет необходимости, все равно
-    #      кто то выиграет
-    #     :return: True-False
-    #     '''
-    #     return self.remains > 0
 
     def take_barrel(self):
         """достать ОДИН бочонок из мешка, - 1 ход"""
