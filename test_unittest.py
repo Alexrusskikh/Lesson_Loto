@@ -17,7 +17,6 @@ class TestPouch(unittest.TestCase):
         self.assertEqual(min(self.pouch.new_barrels), 1)
 
     def test_take_barrel(self):
-
         self.pouch.take_barrel()
         self.assertNotEqual(self.pouch.remains, 90)
         self.assertNotEqual(self.pouch.taken, 0)
