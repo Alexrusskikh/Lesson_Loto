@@ -10,9 +10,9 @@ class Pouch:
         self.taken_barrels = []  # список извлеченных бочонков
 
     def __str__(self):
-        rep = f'Всего в мешке бочонков: {len(self)}, извлекли: {90 - len(self)}, \n ' \
+        return f'Всего в мешке бочонков: {len(self)}, извлекли: {90 - len(self)}, \n ' \
               f'список извлеченных: {self.taken_barrels}'
-        return rep
+
 
     def __len__(self):
         '''возвращает количество  бочонков  в мешке (уменьшается с каждым  ходом)'''
@@ -28,6 +28,6 @@ class Pouch:
         print(f'\nВыпал Бочонок с номером:  *** {new_barrel} ***, осталось ходов:  {len(self)}')
         return new_barrel
 
-# if __name__ == "__main__":
-#     input("\n\nНажмите  Enter, чтобы выйти.")
+if __name__ == "__main__":
+    input("\n\nНажмите  Enter, чтобы выйти.")
 

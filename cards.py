@@ -3,19 +3,22 @@
 import random
 from tabulate import tabulate
 
+
 class Card():
     """Одна игральная карта для игры в Лото.  Создание 15 случайных чисел карточки лото.
     Первый столбец - от 1 до 9, второй от 10 до 19, и т.д, последний столбец - от 80 до 90 включительно.
     :return: Возвращает "правильный" ряд чисел карточки лото"""
-    #атрибуты  класса Card
+    # атрибуты  класса Card
     __emptynum = " "
     __crossednum = "*"
     __crossedrow = "@"
     num = 0
 
     def __init__(self):
-        self.num += 1
-        Card.num += 1
+        """ в экземпляре 3 свойства: номер - self.num, все числа карты - self.data, все ряды карты - self.rows_card  """
+        self.num += 1  # порядковый номер карты
+
+
         row_1 = []
         row_2 = []
         # случайные  цифры первого столбца
@@ -42,7 +45,7 @@ class Card():
 
         # объединяем row_1 и row_2, получаем 15 случайных чисел по порядку
         data = row_1 + num_6
-        self.data = sorted(data)
+        self.data = sorted(data)# все числа карты
 
         col1_8 = []  # объединяем  числа  по столбцам(соответственно  десятков) добавляя пробелы
         for col in range(1, 9):
@@ -75,37 +78,25 @@ class Card():
             row1_card.append(el[0])
             row2_card.append(el[1])
             row3_card.append(el[2])
-        # print(row1_card)
-        # print(row2_card)
-        # print(row3_card)
-        # print(tabulate([row1_card, row2_card, row3_card], tablefmt='double_grid'))
-        self.rows_card = [row1_card, row2_card, row3_card]
+            self.rows_card = [row1_card, row2_card, row3_card]#все строки карты
 
-        # print(self.data)
-        # print(self.rows_card)
+    def __str__(self):  # представление экземпляра класса
+        return f"Карта №: {self.num}\n" \
+               f"{tabulate([self.rows_card[0], self.rows_card[1], self.rows_card[2]], tablefmt='double_grid')}"
 
-    def __str__(self):
-        rep = f"Карта №: {self.num}\n" \
-              f"{tabulate([self.rows_card[0], self.rows_card[1], self.rows_card[2]], tablefmt='double_grid')}"
-        # print(self.num)
-        # print(self.data)
-        # print(self.rows_card)
-        return rep
-
-    def visualization(self):
-        """" просто принтует карту """
-        print(tabulate([self.rows_card[0], self.rows_card[1], self.rows_card[2]], tablefmt='double_grid'))
+    def __contains__(self, item): #  наличие бочонка в  self.data
+        return item in self.data
 
 
-    def replacement(self, card, new_barrel):#замена числа на "*" в self.rows_card, а так  же в self.data
+    def replacement(self, card, new_barrel):  # замена числа на "*" в self.rows_card, а так  же в self.data
         """ замена выпавшего числа на * """
-        if new_barrel in card.data:
-            print (f'\nЕсть такая цифра!')
-            for index, item in enumerate(self.data):# в списке чисел карты ищем число
+        if new_barrel in card:
+            print(f'\nЕсть такая цифра!')
+            for index, item in enumerate(self.data):  # в списке чисел карты ищем число
                 if item == new_barrel:
-                    self.data[index] = self.__crossednum  # ставим фишку
-            for row in self.rows_card:# перебираем строки карточки
-                for index, item in enumerate(row):#в каждой  строке ищем число
+                    self.data[index] = self.__crossednum  # ставим фишку по индексу
+            for row in self.rows_card:  # перебираем строки карточки
+                for index, item in enumerate(row):  # в каждой  строке ищем число
                     if item == new_barrel:
                         row[index] = self.__crossednum  # ставим фишку
 
@@ -114,14 +105,15 @@ class Card():
                   f"****** Вы проиграли!!! ******")
 
 
-
-    def closed_row(self, item) -> bool:#проверяет  ряд карточки на завершенность...
+    def closed_row(self, item) -> bool:  # проверяет  ряд карточки на завершенность...
         return set(item) == {self.__emptynum, self.__crossednum}
+
 
     def replacement_row(self, item):
         for index, num in enumerate(item):
             item[index] = self.__crossedrow
         return item
+
 
     def row_analisis(self, row, item):
         """
@@ -145,28 +137,38 @@ class Card():
             self.replacement_row(item)
         return number_row
 
+
     def closed_card(self):
         """
         перебор рядов карточки
         """
         row_finish = 0
         for row, item in enumerate(self.rows_card):  # перебираем  ряды  одной карты, получаем row, item
-            x = self.row_analisis(row, item)# возвращает параметры всех рядов, открытые 0, № закрытых и заменяет  на @@@@
+            x = self.row_analisis(row, item)  # возвращает параметры всех рядов, открытые 0, № закрытых и заменяет  на @@@@
             row_finish += x
-        # if row_finish != 0:
-        #     print(f"Вы закончили  на {row_finish} ряд")
-        return row_finish
+            return row_finish
+
+
+    def __eq__(self, other):
+        # Сравнение по названиями и числу
+        # return self.name == other.name and self.number == other.number
+        # Сравнение по студентам
+        # return self._students == other._students
+        # Сравнение по длине
+        return len(self) == len(other)
 
 
 class Hand():
     """ Набор карт на руках у одного игрока. """
+
     def __init__(self):
         self.cards = []
+
     def __str__(self):
         if self.cards:
             rep = f"Карты игрока:\n"
             for card in self.cards:
-                 rep += f"{card}\n"
+                rep += f"{card}\n"
         else:
             rep = "Нет карт на  руках..."
         return rep
@@ -178,7 +180,6 @@ class Hand():
             if new_barrel in card.data:
                 new_row.append(card.data)
         return any(new_barrel in el for el in new_row)
-
 
     def clear(self):
         """удаляет все карты из списка self.cards - на руках пусто, и  колоду  очистит,
@@ -192,14 +193,13 @@ class Hand():
     def give(self, card, hand):
         """"передача карты в руки (в колоду)"""
         self.cards.remove(card)
-        hand.add(card)#раздача карт
-
+        hand.add(card)  # раздача карт
 
 
 class Deck(Hand):
     """создание класса Колода через наследование класса Hand"""
 
-    def populate(self): #заполнение  колоды картами, их  24 в лото
+    def populate(self):  # заполнение  колоды картами, их  24 в лото
         for num in range(1, 25):
             card = Card()
             # print(f'Карта №: {card.num}')
@@ -208,10 +208,10 @@ class Deck(Hand):
             # print(card)
             self.add(card)
 
-    def shuffle(self):#перемешивание колоды
+    def shuffle(self):  # перемешивание колоды
         random.shuffle(self.cards)
 
-    def deal(self, hand, per_hand):#передача карт игроку из колоды,
+    def deal(self, hand, per_hand):  # передача карт игроку из колоды,
         for el in range(per_hand):
             if self.cards:
                 card = random.choice(self.cards)
@@ -219,9 +219,22 @@ class Deck(Hand):
                 # print(f'Карта №: {card.num}')
                 # print(f'card.data: {card.data}')
                 # print(f'card.rows_card: {card.rows_card}')
-                #print(card)
+                # print(card)
             else:
                 print("В колоде кончились карты....")
 
-if __name__=="__main__":
-    input("\n\nНажмите  Enter, чтобы выйти.")
+
+# if __name__=="__main__":
+#     input("\n\nНажмите  Enter, чтобы выйти.")
+
+card = Card()
+print(card)
+print(card.data)
+new_barrel = int(input())
+print(new_barrel)
+print('Есть такое число' if new_barrel in card else 'Нет такого числа')
+card.replacement(card, new_barrel)
+print(card)
+
+
+
