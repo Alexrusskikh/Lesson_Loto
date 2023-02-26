@@ -74,13 +74,11 @@ class TestCards:
 
 
     def test_init(self):
-
         assert len(self.card.data) == 15
         assert len(self.card.rows_card) == 3
 
     def test_replacement(self):#замена числа на "*" в self.rows_card, а так  же в self.data
         """ замена выпавшего числа на * """
-
         new_barrel = random.choice(self.card.data)
         self.card.replacement(self.card, new_barrel)
         assert [i for i in self.card.data if i == '*'] ==['*']
@@ -94,7 +92,6 @@ class TestCards:
 
     def test_replacement_row(self):
         """заменяет ряд карточки на собачек"""
-
         item = [" ", "*", " ", " ", " ", " ", "*", " ", " "]
         assert len(self.card.replacement_row(item)) == 9
         assert set(self.card.replacement_row(item)) == {"@"}
@@ -107,13 +104,11 @@ class TestCards:
         :param item: его содержимое, например [" ", " ", "*", "*", " "]
         :return: номер закрытого ряда в карточке - 1,2,3
         """
-
         row = 0
         item = [" ", "*", " ", " ", " ", " ", "*", " ", " "]
         assert (self.card.row_analisis(row, item)) == 1
 
 class TestHand:
-
     def setup_class(self):
         """ настройка любых состояний, специфичных для выполнения этого класса (который
          содержит тесты).
@@ -139,7 +134,6 @@ class TestHand:
 
     def test_clear(self):
         """удаление карт из колоды/у игрока"""
-
         self.hand.cards.append(self.card)
         self.hand.clear()
         assert self.hand.cards == []
@@ -174,13 +168,11 @@ class TestDeck:
 
     def test_populate(self):
         """заполнение  колоды картами, их  24 в лото"""
-
         self.deck.populate()
         assert len(self.deck.cards) == 24
 
     def test_shuffle(self):
         """перемешивание колоды"""
-
         self.deck.populate()
         old = copy.deepcopy(self.deck.cards)
         self.deck.shuffle()
@@ -189,7 +181,6 @@ class TestDeck:
 
     def test_deal(self):
         """передача карт игроку из колоды"""
-
         self.deck.populate()
         hand = Hand()
         per_hand = 2
