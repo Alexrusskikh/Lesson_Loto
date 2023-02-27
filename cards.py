@@ -17,7 +17,7 @@ class Card():
     def __init__(self):
         """ в экземпляре 3 свойства: номер - self.num, все числа карты - self.data, все ряды карты - self.rows_card  """
         self.num += 1  # порядковый номер карты
-
+        Card.num += 1
 
         row_1 = []
         row_2 = []
@@ -149,20 +149,24 @@ class Card():
             return row_finish
 
 
-    def __eq__(self, other):
-        # Сравнение по названиями и числу
-        # return self.name == other.name and self.number == other.number
-        # Сравнение по студентам
-        # return self._students == other._students
-        # Сравнение по длине
-        return len(self) == len(other)
+    # def __eq__(self, other):# это  возможно надо  для проверки уникальности карт в колоде
+    #     """ Сравнение по номеру и длине ряда"""
+    #     return self.num != other.num and self.data != other.data
 
 
 class Hand():
     """ Набор карт на руках у одного игрока. """
-
     def __init__(self):
         self.cards = []
+
+    def __len__(self):
+        """ количество карт на руках у одного игрока"""
+        return len(self.cards)
+
+    def __eq__(self, other):
+        """ сравнение  количества карт у игроков"""
+        return len(self.cards) == len(other.cards)#может понадобиться для уточнения, всем ли раздали
+        # одинаковое количество карт
 
     def __str__(self):
         if self.cards:
@@ -173,10 +177,18 @@ class Hand():
             rep = "Нет карт на  руках..."
         return rep
 
-    def have_num(self, cards, new_barrel):
+    def __contains__(self, item):
+        """наличие карты у игрока"""
+        return item in self.cards
+
+    def __getitem__(self, item):
+        """возвращает карту по индексу"""
+        return self.cards[item]
+
+    def have_num(self, hand, new_barrel):
         """"  в каждой  карте игрока ищет в card.data вхождение new_barrel """
-        new_row = []
-        for card in cards:
+        new_row = []#это список всех номеров на всех картах  игрока
+        for card in hand:
             if new_barrel in card.data:
                 new_row.append(card.data)
         return any(new_barrel in el for el in new_row)
@@ -228,13 +240,32 @@ class Deck(Hand):
 #     input("\n\nНажмите  Enter, чтобы выйти.")
 
 card = Card()
+card1 = Card()
+card2 = Card()
+card3 = Card()
+card4 = Card()
+card5 = Card()
+hand = Hand()
+hand2 = Hand()
+hand.add(card)
+hand.add(card1)
+hand.add(card2)
+#print(hand)
+# print(hand2)
+#
+# print(hand == hand2)
+
+#print(hand.cards[0])
+# for card in hand:
+#     print(card)
+#print(card in hand)
 print(card)
-print(card.data)
 new_barrel = int(input())
-print(new_barrel)
-print('Есть такое число' if new_barrel in card else 'Нет такого числа')
-card.replacement(card, new_barrel)
-print(card)
+print(hand.have_num(hand, new_barrel))
+
+
+
+
 
 
 
