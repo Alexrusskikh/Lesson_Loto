@@ -3,7 +3,6 @@
 import random
 from tabulate import tabulate
 
-
 class Card():
     """Одна игральная карта для игры в Лото.  Создание 15 случайных чисел карточки лото.
     Первый столбец - от 1 до 9, второй от 10 до 19, и т.д, последний столбец - от 80 до 90 включительно.
@@ -12,12 +11,11 @@ class Card():
     __emptynum = " "
     __crossednum = "*"
     __crossedrow = "@"
-    num = 0
-
+    num = 0#начало отсчета номеров карт
     def __init__(self):
         """ в экземпляре 3 свойства: номер - self.num, все числа карты - self.data, все ряды карты - self.rows_card  """
-        self.num += 1  # порядковый номер карты
         Card.num += 1
+        self.num = Card.num  # порядковый номер карты
 
         row_1 = []
         row_2 = []
@@ -80,43 +78,47 @@ class Card():
             row3_card.append(el[2])
             self.rows_card = [row1_card, row2_card, row3_card]#все строки карты
 
-    def __str__(self):  # представление экземпляра класса
+    def __str__(self):
+        """представление экземпляра класса Card"""
         return f"Карта №: {self.num}\n" \
                f"{tabulate([self.rows_card[0], self.rows_card[1], self.rows_card[2]], tablefmt='double_grid')}"
 
-    def __contains__(self, item): #  наличие бочонка в  self.data
+    def __contains__(self, item):
+        """наличие бочонка в  self.data"""
         return item in self.data
 
 
-    def replacement(self, card, new_barrel):  # замена числа на "*" в self.rows_card, а так  же в self.data
-        """ замена выпавшего числа на * """
+    def replacement(self, card, new_barrel):
+        """ замена выпавшего числа на * в self.rows_card, а так  же в self.data"""
         if new_barrel in card:
             print(f'\nЕсть такая цифра!')
             for index, item in enumerate(self.data):  # в списке чисел карты ищем число
                 if item == new_barrel:
                     self.data[index] = self.__crossednum  # ставим фишку по индексу
             for row in self.rows_card:  # перебираем строки карточки
-                for index, item in enumerate(row):  # в каждой  строке ищем число
+                for index, item in enumerate(row):  # в каждой строке ищем число
                     if item == new_barrel:
-                        row[index] = self.__crossednum  # ставим фишку
+                        row[index] = self.__crossednum  # ставим фишку по индексу
 
         else:
             print(f"На Вашей карте нет такого числа: {new_barrel}\n"
                   f"****** Вы проиграли!!! ******")
 
 
-    def closed_row(self, item) -> bool:  # проверяет  ряд карточки на завершенность...
+    def closed_row(self, item) -> bool:
+        """проверяет  ряд карточки на завершенность...т.е. наличие только "*"  и "пробел"""""
         return set(item) == {self.__emptynum, self.__crossednum}
 
 
     def replacement_row(self, item):
+        """замена  завершенного ряда  "@"собаками, вызывается в def row_analisis """
         for index, num in enumerate(item):
             item[index] = self.__crossedrow
         return item
 
 
     def row_analisis(self, row, item):
-        """
+        """ вызывается в def closed_card
         возвращает номер закрытого ряда в карточке и заменяет  его @@@@@@@@@
         :param row: порядковый номер горизонтального ряда
         :param item: его содержимое, например [" ", " ", "*", "*", " "]
@@ -139,19 +141,16 @@ class Card():
 
 
     def closed_card(self):
-        """
-        перебор рядов карточки
-        """
+        """ перебор рядов карточки"""
         row_finish = 0
         for row, item in enumerate(self.rows_card):  # перебираем  ряды  одной карты, получаем row, item
             x = self.row_analisis(row, item)  # возвращает параметры всех рядов, открытые 0, № закрытых и заменяет  на @@@@
             row_finish += x
             return row_finish
 
-
-    # def __eq__(self, other):# это  возможно надо  для проверки уникальности карт в колоде
-    #     """ Сравнение по номеру и длине ряда"""
-    #     return self.num != other.num and self.data != other.data
+    def __eq__(self, other):
+        """ Сравнение по номеру и списку чисел карты для проверки уникальности карт в колоде"""
+        return self.num != other.num and self.data != other.data
 
 
 class Hand():
@@ -165,8 +164,7 @@ class Hand():
 
     def __eq__(self, other):
         """ сравнение  количества карт у игроков"""
-        return len(self.cards) == len(other.cards)#может понадобиться для уточнения, всем ли раздали
-        # одинаковое количество карт
+        return len(self.cards) == len(other.cards)#всем ли раздали одинаковое количество карт
 
     def __str__(self):
         if self.cards:
@@ -187,7 +185,7 @@ class Hand():
 
     def have_num(self, hand, new_barrel):
         """"  в каждой  карте игрока ищет в card.data вхождение new_barrel """
-        new_row = []#это список всех номеров на всех картах  игрока
+        new_row = []#это список всех чисел на всех картах игрока
         for card in hand:
             if new_barrel in card.data:
                 new_row.append(card.data)
@@ -211,27 +209,28 @@ class Hand():
 class Deck(Hand):
     """создание класса Колода через наследование класса Hand"""
 
-    def populate(self):  # заполнение  колоды картами, их  24 в лото
+    def populate(self):
+        """заполнение  колоды картами, их 24 в лото"""
         for num in range(1, 25):
             card = Card()
-            # print(f'Карта №: {card.num}')
-            # print(f'card.data: {card.data}')
-            # print(f'card.rows_card: {card.rows_card}')
-            # print(card)
             self.add(card)
 
-    def shuffle(self):  # перемешивание колоды
+    def shuffle(self):
+        """перемешивание колоды"""
         random.shuffle(self.cards)
 
-    def deal(self, hand, per_hand):  # передача карт игроку из колоды,
+    def deal(self, hand, per_hand):
+        """
+        передача карт на руки игроку из колоды
+        :param hand: игрок
+        :param per_hand: количество запрошенных карт
+        :return:
+        """
+
         for el in range(per_hand):
             if self.cards:
                 card = random.choice(self.cards)
                 self.give(card, hand)
-                # print(f'Карта №: {card.num}')
-                # print(f'card.data: {card.data}')
-                # print(f'card.rows_card: {card.rows_card}')
-                # print(card)
             else:
                 print("В колоде кончились карты....")
 
@@ -239,29 +238,32 @@ class Deck(Hand):
 # if __name__=="__main__":
 #     input("\n\nНажмите  Enter, чтобы выйти.")
 
-card = Card()
-card1 = Card()
-card2 = Card()
-card3 = Card()
-card4 = Card()
-card5 = Card()
-hand = Hand()
-hand2 = Hand()
-hand.add(card)
-hand.add(card1)
-hand.add(card2)
-#print(hand)
-# print(hand2)
+# card = Card()
+# card1 = Card()
+# card2 = Card()
+# card3 = Card()
+# card4 = Card()
+# card5 = Card()
 #
+# hand1 = Hand()
+# hand2 = Hand()
+# hand1.add(card)
+# hand1.add(card1)
+# hand1.add(card2)
+#
+# hand1.give(card, hand2)
+# print(hand1)
+# print(hand2)
+
 # print(hand == hand2)
 
 #print(hand.cards[0])
 # for card in hand:
-#     print(card)
+#print(card)
 #print(card in hand)
-print(card)
-new_barrel = int(input())
-print(hand.have_num(hand, new_barrel))
+# print(card1)
+# new_barrel = int(input())
+# print(hand.have_num(hand, new_barrel))
 
 
 
