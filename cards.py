@@ -235,8 +235,18 @@ class Deck(Hand):
                 print("В колоде кончились карты....")
 
 
-# if __name__=="__main__":
-#     input("\n\nНажмите  Enter, чтобы выйти.")
+    def __eq__(self, other):
+        """
+        сравнение двух колод
+        :param other: другая колода
+        :return: булево значение
+        """
+        return len(self.cards) == len(other.cards)
+
+
+
+if __name__=="__main__":
+    input("\n\nНажмите  Enter, чтобы выйти.")
 
 # card = Card()
 # card1 = Card()
@@ -259,7 +269,7 @@ class Deck(Hand):
 
 #print(hand.cards[0])
 # for card in hand:
-#print(card)
+print(card)
 #print(card in hand)
 # print(card1)
 # new_barrel = int(input())
