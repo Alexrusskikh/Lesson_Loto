@@ -10,7 +10,7 @@ class Pouch:
         self.taken_barrels = []  # список извлеченных бочонков
 
     def __str__(self):
-        return f'Всего в мешке бочонков: {len(self)}, извлекли: {90 - len(self)}, \n ' \
+        return f'\nВсего в мешке бочонков: {len(self)}, извлекли: {90 - len(self)}, \n ' \
               f'список извлеченных: {self.taken_barrels}'
 
 
