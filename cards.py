@@ -269,7 +269,7 @@ if __name__=="__main__":
 
 #print(hand.cards[0])
 # for card in hand:
-print(card)
+#print(card)
 #print(card in hand)
 # print(card1)
 # new_barrel = int(input())
