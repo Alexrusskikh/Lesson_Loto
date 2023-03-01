@@ -25,7 +25,7 @@ class TestPouch:
 
     def test_init(self):
         """начальное состояние  мешка"""
-        #pouch = Pouch(remains=90, taken=0)
+
         assert len(self.pouch.taken_barrels) == 0
         assert len(self.pouch.all_barrels) == 90
         assert max(self.pouch.all_barrels) == 90
