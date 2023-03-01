@@ -245,8 +245,8 @@ class Deck(Hand):
 
 
 
-if __name__=="__main__":
-    input("\n\nНажмите  Enter, чтобы выйти.")
+# if __name__=="__main__":
+#     input("\n\nНажмите  Enter, чтобы выйти.")
 
 # card = Card()
 # card1 = Card()
@@ -275,6 +275,16 @@ if __name__=="__main__":
 # new_barrel = int(input())
 # print(hand.have_num(hand, new_barrel))
 
+deck = Deck()
+deck.populate()
+deck.shuffle()
+print(deck)
+deck1 = Deck()
+deck1.populate()
+deck2 = Deck()
+len(deck)
+deck.populate()
+print(deck == deck1)
 
 
 

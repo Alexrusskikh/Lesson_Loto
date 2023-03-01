@@ -2,7 +2,7 @@
 
 """"на основе модулей cards, games, pouch"""
 import cards, games, pouch
-from tabulate import tabulate
+#from tabulate import tabulate
 class Loto_Pouch(pouch.Pouch):
     """Мешок для  игры Loto"""
 
@@ -18,8 +18,8 @@ class Loto_Deck(cards.Deck):
 
 class Loto_Hand(cards.Hand):
     """Набор карт для игры в Loto у одного игрока"""
-    def __init__(self, name, credit=0, winning=0, loss=0): #добавляет атрибутов игрока name
-        super(Loto_Hand, self).__init__()
+    def __init__(self, name, credit=0, winning=0, loss=0): #добавляет атрибутов игрокy name
+        super().__init__()
         self.name = name
         self.credit = credit
         self.winning = winning
@@ -37,6 +37,7 @@ class Loto_Hand(cards.Hand):
 
 class Loto_Player(Loto_Hand):
     """ Игрок в Loto"""
+    #TODO дополнительные вопросы  игроку
     def take_card(self):
         response = games.ask_yes_no("\n" + self.name + ", будете брать еще одну карту? (Y/N): ")
         return response == "y" or response == "н"
@@ -68,6 +69,7 @@ class Loto_Player(Loto_Hand):
 
 class Loto_Dealer(Loto_Hand):
     """Дилер в игре Loto, задает вопросы и кричит бочонки, манипулирует колодой, пока недоделал.... """
+    #TODO дилера доделать
 
 class Loto_Game():
     """Отдельная игра Loto, внутри будут раунды проверки наличия выпавшего бочонка..."""
@@ -80,6 +82,7 @@ class Loto_Game():
         self.deck.shuffle()
         self.bank = 0  # банк отдельной игры
         print(f"\n!!!! Банк игры пока  {self.bank} УЕ!!!!")
+
         for player in self.players:
             player.cards.clear()
 
@@ -91,8 +94,9 @@ class Loto_Game():
                     print("Попробуйте ввести число")
 
             self.deck.deal(player, per_hand)
+            #TODO  сделать произвольную ставку
             #делаем ставку по 1УЕ с карты автоматически
-            #bet = int(input(f"{player.name}, сделайте ставку в игре:  ")), можно сделать произвольную ставку.
+            #bet = int(input(f"{player.name}, сделайте ставку в игре:  ")), .
             player.credit -= per_hand
             player.loss -= per_hand
             self.bank += per_hand
@@ -237,7 +241,7 @@ class Loto_Game():
 
 def main():
     """ создает игроков, организует  их  в виде  списка, создает  объект Game,
-    и передает в него список  игроков как аргумент? затем  вызывает метод  play, и  делает  это циклически,
+    и передает в него список  игроков как аргумент, затем вызывает метод play, и делает это циклически,
     пока не получить команду прекратить игру
     :return:
     """
