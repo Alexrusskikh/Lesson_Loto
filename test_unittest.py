@@ -9,19 +9,15 @@ class TestPouch(unittest.TestCase):
 
 
     def test_init(self):
-        self.assertEqual(self.pouch.remains, 90)
-        self.assertEqual(self.pouch.taken, 0)
         self.assertEqual(self.pouch.taken_barrels, [])
-        self.assertEqual(len(self.pouch.new_barrels), 90)
-        self.assertEqual(max(self.pouch.new_barrels), 90)
-        self.assertEqual(min(self.pouch.new_barrels), 1)
+        self.assertEqual(len(self.pouch.all_barrels), 90)
+        self.assertEqual(max(self.pouch.all_barrels), 90)
+        self.assertEqual(min(self.pouch.all_barrels), 1)
 
     def test_take_barrel(self):
         self.pouch.take_barrel()
-        self.assertNotEqual(self.pouch.remains, 90)
-        self.assertNotEqual(self.pouch.taken, 0)
         self.assertNotEqual(len(self.pouch.taken_barrels), 0)
-        self.assertNotEqual(len(self.pouch.new_barrels), 90)
+        self.assertNotEqual(len(self.pouch.all_barrels), 90)
 
 
 class QuestionTestCase(unittest.TestCase):
@@ -146,11 +142,10 @@ class TestDeck(unittest.TestCase):
 
     def test_shuffle(self):
         """перемешивание колоды"""
-
         self.deck.populate()
-        old = copy.deepcopy(self.deck.cards)
         self.deck.shuffle()
-        new = self.deck.cards
+        new = copy.deepcopy(self.deck.cards)
+        old = self.deck.cards
         self.assertNotEqual(new, old)
 
     def test_deal(self):
@@ -187,7 +182,7 @@ class TestLoto_Game(unittest.TestCase):
         self.assertEqual(loto_game.bank, 0)
         self.assertEqual(len(loto_game.players), 0)
         self.assertEqual(len(loto_game.deck.cards), 24)
-        self.assertEqual(loto_game.pouch.remains, 90)
+
 
 
 

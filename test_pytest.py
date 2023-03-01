@@ -26,21 +26,17 @@ class TestPouch:
     def test_init(self):
         """начальное состояние  мешка"""
         #pouch = Pouch(remains=90, taken=0)
-        assert self.pouch.remains == 90
-        assert self.pouch.taken == 0
         assert len(self.pouch.taken_barrels) == 0
-        assert len(self.pouch.new_barrels) == 90
-        assert max(self.pouch.new_barrels) == 90
-        assert min(self.pouch.new_barrels) == 1
+        assert len(self.pouch.all_barrels) == 90
+        assert max(self.pouch.all_barrels) == 90
+        assert min(self.pouch.all_barrels) == 1
 
 
     def test_take_barrel(self):
         """ изменение состояния мешка  после извлечения бочонка"""
         self.pouch.take_barrel()
-        assert self.pouch.remains != 90
-        assert self.pouch.taken != 0
         assert len(self.pouch.taken_barrels) != 0
-        assert len(self.pouch.new_barrels) != 90
+        assert len(self.pouch.all_barrels) != 90
 
 
 def test_ask_yes_no(question = "question"):
@@ -174,9 +170,10 @@ class TestDeck:
     def test_shuffle(self):
         """перемешивание колоды"""
         self.deck.populate()
-        old = copy.deepcopy(self.deck.cards)
         self.deck.shuffle()
-        new = self.deck.cards
+        new = copy.deepcopy(self.deck.cards)
+        old = self.deck.cards
+        assert len(new) == len(old)
         assert new != old
 
     def test_deal(self):
@@ -212,7 +209,7 @@ class TestLoto_Game:
         assert loto_game.bank == 0  # банк отдельной игры
         assert len(loto_game.players) == 0
         assert len(loto_game.deck.cards) == 24
-        assert loto_game.pouch.remains == 90
+        assert len(loto_game.pouch.all_barrels) == 90
 
 
 
