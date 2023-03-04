@@ -275,16 +275,16 @@ class Deck(Hand):
 # new_barrel = int(input())
 # print(hand.have_num(hand, new_barrel))
 
-deck = Deck()
-deck.populate()
-deck.shuffle()
-print(deck)
-deck1 = Deck()
-deck1.populate()
-deck2 = Deck()
-len(deck)
-deck.populate()
-print(deck == deck1)
+# deck = Deck()
+# deck.populate()
+# deck.shuffle()
+# print(deck)
+# deck1 = Deck()
+# deck1.populate()
+# deck2 = Deck()
+# len(deck)
+# deck.populate()
+# print(deck == deck1)
 
 
 
